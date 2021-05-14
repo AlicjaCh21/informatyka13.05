@@ -46,16 +46,33 @@ pwt = geopandas.read_file('Powiaty.shp')
 pwt = pwt.to_crs("EPSG:4326")
 pwt.plot(legend=True)
 cell = geopandas.GeoDataFrame(pwt, columns=['geometry'])
-ax1 = gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_0_14', cmap='jet')
+ax = gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_0_14', cmap='jet')
 plt.autoscale(False)
 
 cell.plot(ax=ax, facecolor="none", edgecolor='grey')
-ax1.axis("on")
+ax.axis("on")
 merged = geopandas.sjoin(gdf, cell, how='left', op='within')
 dissolve = merged.dissolve(by="index_right", aggfunc="sum")
 cell.loc[dissolve.index, 'TOT_0_14'] = dissolve.TOT_0_14.values
-ax1 = cell.plot(column='TOT_0_14', figsize=(12, 8), cmap='viridis', edgecolor="grey", legend = True)
+ax = cell.plot(column='TOT_0_14', figsize=(12, 8), cmap='viridis', edgecolor="grey", legend = True)
 plt.autoscale(True)
-ax1.set_axis_on()
+ax.set_axis_on()
 plt.axis('equal')
 plt.title('Liczba ludności w powiatach wiek 0-14')
+
+#liczba ludnosci w wieku 15-64
+plt.figure(4)
+ax = gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_15_64', cmap='jet')
+plt.autoscale(False)
+
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_15_64'] = dissolve.TOT_15_64.values
+ax = cell.plot(column='TOT_15_64', figsize=(12, 8), cmap='viridis', edgecolor="red", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('Liczba ludności w powiatach wiek 15-64')
+
