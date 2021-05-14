@@ -76,3 +76,17 @@ ax.set_axis_on()
 plt.axis('equal')
 plt.title('Liczba ludności w powiatach wiek 15-64')
 
+#liczba ludnosci w wieku 65+
+plt.figure(5)
+ax = gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_65__', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_65__'] = dissolve.TOT_65__.values
+ax = cell.plot(column='TOT_65__', figsize=(12, 8), cmap='viridis', edgecolor="green", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('Liczba ludności w powiatach wiek 65+')
