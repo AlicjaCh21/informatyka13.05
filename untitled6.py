@@ -166,7 +166,18 @@ ax.set_axis_on()
 plt.axis('equal')
 plt.title('Liczba kobiet w wieku 15-64')
 
-
-
+#kobiety 65+
+ax=gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_FEM_65__', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_FEM_65__'] = dissolve.TOT_FEM_65__.values
+ax = cell.plot(column='TOT_FEM_65__', figsize=(12, 8), cmap='viridis', edgecolor="blue", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('Liczba kobiet w wieku 65+')
 
 
