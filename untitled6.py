@@ -2,6 +2,8 @@ import geopandas
 import shapely
 import numpy as np
 import  matplotlib.pyplot  as  plt 
+import pandas as pd
+import math as m
 
 gdf = geopandas.read_file('PD_STAT_GRID_CELL_2011.shp')
 
@@ -90,3 +92,26 @@ plt.autoscale(True)
 ax.set_axis_on()
 plt.axis('equal')
 plt.title('Liczba ludności w powiatach wiek 65+')
+
+#mezczyzni 0-14
+plt.figure(6)
+ax=gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_MALE_0_14', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_MALE_0_14'] = dissolve.TOT_MALE_0_14.values
+ax = cell.plot(column='TOT_MALE_0_14', figsize=(12, 8), cmap='viridis', edgecolor="blue", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal');
+plt.title('Liczba mężczyzn w wieku 0-14')
+
+
+
+
+
+
+
+
