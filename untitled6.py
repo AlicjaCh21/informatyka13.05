@@ -28,3 +28,15 @@ plt.autoscale(False)
 cell.plot(ax=ax, facecolor="none", edgecolor='grey')
 ax.axis("off")
 #tu
+
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+
+cell.loc[dissolve.index, 'TOT'] = dissolve.TOT.values
+
+ax = cell.plot(column='TOT', figsize=(12, 8), cmap='viridis', vmax = 700000, edgecolor="grey", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('liczba ludności w siatce')
