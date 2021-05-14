@@ -138,6 +138,20 @@ ax.set_axis_on()
 plt.axis('equal');
 plt.title('Liczba mężczyzn w wieku 65+')
 
+#kobiety 0-14
+ax=gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_FEM_0_14', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_FEM_0_14'] = dissolve.TOT_FEM_0_14.values
+ax = cell.plot(column='TOT_FEM_0_14', figsize=(12, 8), cmap='viridis', edgecolor="grey", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('Liczba kobiet w wieku 0-14')
+
 
 
 
