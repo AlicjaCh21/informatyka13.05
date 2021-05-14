@@ -123,6 +123,23 @@ ax.set_axis_on()
 plt.axis('equal');
 plt.title('Liczba mężczyzn w wieku 15-64')
 
+#mezczyzni 65+
+plt.figure(8)
+ax=gdf.plot(markersize=.1, figsize=(12, 8), column='TOT_MALE_65__', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = geopandas.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'TOT_MALE_65__'] = dissolve.TOT_MALE_65__.values
+ax = cell.plot(column='TOT_MALE_65__', figsize=(12, 8), cmap='viridis', edgecolor="green", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal');
+plt.title('Liczba mężczyzn w wieku 65+')
+
+
+
 
 
 
