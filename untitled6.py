@@ -152,7 +152,7 @@ ax.set_axis_on()
 plt.axis('equal')
 plt.title('Liczba kobiet w wieku 0-14')
 
-
+#próba
 
 
 
