@@ -25,15 +25,15 @@ cell = geopandas.GeoDataFrame(grid_cells, columns=['geometry'])
 ax = gdf.plot(markersize=.1, figsize=(12, 8), column='TOT', cmap='jet')
 plt.autoscale(False)
 cell.plot(ax=ax, facecolor="none", edgecolor='grey')
-ax.axis("off")
+ax.axis("on")
 #tu
-
+plt.figure(2)
 merged = geopandas.sjoin(gdf, cell, how='left', op='within')
 
 dissolve = merged.dissolve(by="index_right", aggfunc="sum")
 
 cell.loc[dissolve.index, 'TOT'] = dissolve.TOT.values
-plt.figure(2)
+
 ax = cell.plot(column='TOT', figsize=(12, 8), cmap='viridis', vmax = 700000, edgecolor="grey", legend = True)
 plt.autoscale(True)
 ax.set_axis_on()
