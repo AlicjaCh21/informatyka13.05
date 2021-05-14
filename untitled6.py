@@ -181,3 +181,30 @@ plt.axis('equal')
 plt.title('Liczba kobiet w wieku 65+')
 
 
+#Ratio
+woj=geopandas.read_file('Województwa.shp')
+woj=woj.to_crs("EPSG:4326")
+woj.plot(legend=True)
+cell = geopandas.GeoDataFrame(woj, columns=['geometry'])
+ax=gdf.plot(markersize=.1, figsize=(12, 8), column='FEM_RATIO', cmap='jet')
+plt.autoscale(False)
+cell.plot(ax=ax, facecolor="none", edgecolor='grey')
+ax.axis("on")
+merged = gpd.sjoin(gdf, cell, how='left', op='within')
+dissolve = merged.dissolve(by="index_right", aggfunc="sum")
+cell.loc[dissolve.index, 'FEM_RATIO'] = dissolve.FEM_RATIO.values
+ax = cell.plot(column='FEM_RATIO', figsize=(12, 8), cmap='viridis', edgecolor="black", legend = True)
+plt.autoscale(True)
+ax.set_axis_on()
+plt.axis('equal')
+plt.title('Ratio kobiet w województwach')
+
+
+
+
+
+
+
+
+
+
